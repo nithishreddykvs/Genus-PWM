@@ -1,0 +1,46 @@
+# ===========================
+# Clock Constraints
+# ===========================
+
+# Create the clock (Assume 50 MHz clock, period = 20 ns)
+create_clock -name clk -period 20 [get_ports clk]
+
+# ===========================
+# Input Constraints
+# ===========================
+
+# Set input delay (Assume a setup time of 2 ns before clock edge)
+set_input_delay -clock clk 2 [get_ports rst]
+set_input_delay -clock clk 2 [get_ports sw]
+
+# ===========================
+# Output Constraints
+# ===========================
+
+# Set output delay (Assume a hold time of 1 ns after clock edge)
+set_output_delay -clock clk 1 [get_ports pwm_out]
+
+# ===========================
+# False Path Constraints
+# ===========================
+
+# False path for reset (No timing checks through reset)
+set_false_path -from [get_ports rst]
+
+# ===========================
+# Multicycle Constraints (Optional)
+# ===========================
+
+# Multicycle path if counter runs at a lower rate than the clock (optional)
+# set_multicycle_path 10 -setup -from [get_ports sw] -to [get_ports pwm_out]
+
+# ===========================
+# Area Constraints (Optional)
+# ===========================
+
+# No area constraints, let the tool optimize freely
+set_max_area 0
+
+# ===========================
+# End of Constraints
+# ===========================
